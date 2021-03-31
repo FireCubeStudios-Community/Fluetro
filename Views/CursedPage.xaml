@@ -1,0 +1,514 @@
+﻿<Page
+    x:Class="Fluetro.CursedPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Fluetro"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:syncfusion="using:Syncfusion.Windows.PdfViewer" 
+        xmlns:hsvColorPickers="using:HSVColorPickers"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+       extensions:TitleBarExtensions.ButtonBackgroundColor="Transparent"
+          extensions:TitleBarExtensions.ButtonForegroundColor="Gray"
+    
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:notification="using:Syncfusion.UI.Xaml.Controls.Notification" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    mc:Ignorable="d"
+   Background="#323232">
+    <Page.Resources>
+        <Style x:Key="PdfViewerGlobalOpenBtnStyle" TargetType="Button">
+            <Setter Property="AutomationProperties.AutomationId" Value="OpenButton"/>
+            <Setter Property="AutomationProperties.Name" Value="Open"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent" Height="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Name="backgroundGrid" Height="40" Width="40" Visibility="Visible" Grid.Column="0" Background="Transparent" >
+                                <Ellipse x:Name="OpenButtonRectangle" Fill="Transparent"/>
+                                <Grid x:Name="openPathWhite" Height="25" Width="25">
+                                    <Path Data="F1M204.0503,250L178.1243,250L175.9243,228L189.7323,228L191.6343,230.639L190.0123,231.809L188.7093,230L178.1343,230L179.9343,248L202.2913,248L203.8343,236L187.1123,236L184.6963,240.394L182.9443,239.431L185.9293,234L206.1073,234z" Fill="White" StrokeThickness="2" Stretch="Fill"/>
+                                </Grid>
+                                <Grid x:Name="openPathBlack" Height="25" Width="25" Opacity="0">
+                                    <Path Data="F1M204.0503,250L178.1243,250L175.9243,228L189.7323,228L191.6343,230.639L190.0123,231.809L188.7093,230L178.1343,230L179.9343,248L202.2913,248L203.8343,236L187.1123,236L184.6963,240.394L182.9443,239.431L185.9293,234L206.1073,234z" Fill="Black" StrokeThickness="2" Stretch="Fill"/>
+                                </Grid>
+                            </Grid>
+                            <TextBlock Grid.Column="1" Margin="10,20,0,0" x:Name="TextLabel" Text="Open" Foreground="White" FontSize="12" TextAlignment="Center" Width="Auto" HorizontalAlignment="Left" TextTrimming="WordEllipsis" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Fill">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathWhite" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathBlack" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PdfViewerUndoBtnStyle" TargetType="Button">
+            <Setter Property="AutomationProperties.AutomationId" Value="UndoButton"/>
+            <Setter Property="AutomationProperties.Name" Value="Undo"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent" Height="60">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="8*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Name="backgroundGrid" Height="40" Width="40" Visibility="Visible" Grid.Row="0" Background="Transparent" >
+                                <Ellipse x:Name="OpenButtonRectangle" Fill="Transparent"/>
+                                <Grid x:Name="openPathGray" Canvas.Left="379" Canvas.Top="150" Height="35" Width="35">
+                                    <Path Data="F1M592,239C592,251.703,581.703,262,569,262C556.297,262,546,251.703,546,239C546,226.297,556.297,216,569,216C581.703,216,592,226.297,592,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="Gray" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M575.958,236L558.414,236L564.485,229.929C564.876,229.538,564.876,228.905,564.485,228.515C564.095,228.124,563.462,228.124,563.071,228.515L555.294,236.292C555.201,236.384,555.128,236.495,555.077,236.618C554.976,236.862,554.976,237.138,555.077,237.382C555.128,237.505,555.201,237.616,555.294,237.708L563.071,245.485C563.267,245.681,563.522,245.778,563.778,245.778C564.034,245.778,564.29,245.681,564.485,245.485C564.876,245.095,564.876,244.462,564.485,244.071L558.414,238L575.958,238C578.738,238,581,240.22,581,243C581,245.78,578.738,248,575.958,248L569.042,248C568.489,248,568.042,248.447,568.042,249C568.042,249.553,568.489,250,569.042,250L575.958,250C579.841,250,583,246.883,583,243C583,239.118,579.841,236,575.958,236" Fill="Gray" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                                <Grid x:Name="openPathWhite" Canvas.Left="379" Canvas.Top="150" Height="35" Width="35">
+                                    <Path Data="F1M592,239C592,251.703,581.703,262,569,262C556.297,262,546,251.703,546,239C546,226.297,556.297,216,569,216C581.703,216,592,226.297,592,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="White" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M575.958,236L558.414,236L564.485,229.929C564.876,229.538,564.876,228.905,564.485,228.515C564.095,228.124,563.462,228.124,563.071,228.515L555.294,236.292C555.201,236.384,555.128,236.495,555.077,236.618C554.976,236.862,554.976,237.138,555.077,237.382C555.128,237.505,555.201,237.616,555.294,237.708L563.071,245.485C563.267,245.681,563.522,245.778,563.778,245.778C564.034,245.778,564.29,245.681,564.485,245.485C564.876,245.095,564.876,244.462,564.485,244.071L558.414,238L575.958,238C578.738,238,581,240.22,581,243C581,245.78,578.738,248,575.958,248L569.042,248C568.489,248,568.042,248.447,568.042,249C568.042,249.553,568.489,250,569.042,250L575.958,250C579.841,250,583,246.883,583,243C583,239.118,579.841,236,575.958,236" Fill="White" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                                <Grid x:Name="openPathBlack" Canvas.Left="379" Canvas.Top="150" Height="35" Width="35" Opacity="0">
+                                    <Path Data="F1M592,239C592,251.703,581.703,262,569,262C556.297,262,546,251.703,546,239C546,226.297,556.297,216,569,216C581.703,216,592,226.297,592,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="Black" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M575.958,236L558.414,236L564.485,229.929C564.876,229.538,564.876,228.905,564.485,228.515C564.095,228.124,563.462,228.124,563.071,228.515L555.294,236.292C555.201,236.384,555.128,236.495,555.077,236.618C554.976,236.862,554.976,237.138,555.077,237.382C555.128,237.505,555.201,237.616,555.294,237.708L563.071,245.485C563.267,245.681,563.522,245.778,563.778,245.778C564.034,245.778,564.29,245.681,564.485,245.485C564.876,245.095,564.876,244.462,564.485,244.071L558.414,238L575.958,238C578.738,238,581,240.22,581,243C581,245.78,578.738,248,575.958,248L569.042,248C568.489,248,568.042,248.447,568.042,249C568.042,249.553,568.489,250,569.042,250L575.958,250C579.841,250,583,246.883,583,243C583,239.118,579.841,236,575.958,236" Fill="Black" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                            </Grid>
+                            <TextBlock Grid.Row="1" Margin="0,-4,0,0" x:Name="TextLabel" Text="Undo" Foreground="White" FontSize="10" TextAlignment="Center" Width="Auto"  TextTrimming="WordEllipsis" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Fill">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathGray" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathWhite" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathBlack" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathGray" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathWhite" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathBlack" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PdfViewerRedoBtnStyle" TargetType="Button">
+            <Setter Property="AutomationProperties.AutomationId" Value="RedoButton"/>
+            <Setter Property="AutomationProperties.Name" Value="Redo"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent" Height="60">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="8*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Name="backgroundGrid" Height="40" Width="40" Visibility="Visible" Grid.Row="0" Background="Transparent" >
+                                <Ellipse x:Name="OpenButtonRectangle" Fill="Transparent"/>
+                                <Grid x:Name="openPathGray" Canvas.Left="456" Canvas.Top="150" Height="35" Width="35">
+                                    <Path Data="F1M669,239C669,251.703,658.703,262,646,262C633.297,262,623,251.703,623,239C623,226.297,633.297,216,646,216C658.703,216,669,226.297,669,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="Gray" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M659.923,237.3818C660.024,237.1378,660.024,236.8628,659.923,236.6178C659.872,236.4948,659.798,236.3838,659.706,236.2918L651.929,228.5148C651.538,228.1238,650.905,228.1238,650.515,228.5148C650.124,228.9048,650.124,229.5378,650.515,229.9288L656.586,235.9998L639.042,235.9998C635.159,235.9998,632,239.1178,632,243.0008C632,246.8828,635.159,249.9998,639.042,249.9998L645.958,249.9998C646.511,249.9998,646.958,249.5528,646.958,248.9998C646.958,248.4468,646.511,247.9998,645.958,247.9998L639.042,247.9998C636.262,247.9998,634,245.7798,634,243.0008C634,240.2198,636.262,237.9998,639.042,237.9998L656.586,237.9998L650.515,244.0708C650.124,244.4618,650.124,245.0948,650.515,245.4858C650.71,245.6808,650.966,245.7778,651.222,245.7778C651.478,245.7778,651.733,245.6808,651.929,245.4858L659.706,237.7078C659.798,237.6158,659.872,237.5048,659.923,237.3818"  Fill="White" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                                <Grid x:Name="openPathWhite" Canvas.Left="456" Canvas.Top="150" Height="35" Width="35">
+                                    <Path Data="F1M669,239C669,251.703,658.703,262,646,262C633.297,262,623,251.703,623,239C623,226.297,633.297,216,646,216C658.703,216,669,226.297,669,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="White" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M659.923,237.3818C660.024,237.1378,660.024,236.8628,659.923,236.6178C659.872,236.4948,659.798,236.3838,659.706,236.2918L651.929,228.5148C651.538,228.1238,650.905,228.1238,650.515,228.5148C650.124,228.9048,650.124,229.5378,650.515,229.9288L656.586,235.9998L639.042,235.9998C635.159,235.9998,632,239.1178,632,243.0008C632,246.8828,635.159,249.9998,639.042,249.9998L645.958,249.9998C646.511,249.9998,646.958,249.5528,646.958,248.9998C646.958,248.4468,646.511,247.9998,645.958,247.9998L639.042,247.9998C636.262,247.9998,634,245.7798,634,243.0008C634,240.2198,636.262,237.9998,639.042,237.9998L656.586,237.9998L650.515,244.0708C650.124,244.4618,650.124,245.0948,650.515,245.4858C650.71,245.6808,650.966,245.7778,651.222,245.7778C651.478,245.7778,651.733,245.6808,651.929,245.4858L659.706,237.7078C659.798,237.6158,659.872,237.5048,659.923,237.3818"  Fill="White" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                                <Grid x:Name="openPathBlack" Canvas.Left="456" Canvas.Top="150" Height="35" Width="35" Opacity="0">
+                                    <Path Data="F1M669,239C669,251.703,658.703,262,646,262C633.297,262,623,251.703,623,239C623,226.297,633.297,216,646,216C658.703,216,669,226.297,669,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="Black" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M659.923,237.3818C660.024,237.1378,660.024,236.8628,659.923,236.6178C659.872,236.4948,659.798,236.3838,659.706,236.2918L651.929,228.5148C651.538,228.1238,650.905,228.1238,650.515,228.5148C650.124,228.9048,650.124,229.5378,650.515,229.9288L656.586,235.9998L639.042,235.9998C635.159,235.9998,632,239.1178,632,243.0008C632,246.8828,635.159,249.9998,639.042,249.9998L645.958,249.9998C646.511,249.9998,646.958,249.5528,646.958,248.9998C646.958,248.4468,646.511,247.9998,645.958,247.9998L639.042,247.9998C636.262,247.9998,634,245.7798,634,243.0008C634,240.2198,636.262,237.9998,639.042,237.9998L656.586,237.9998L650.515,244.0708C650.124,244.4618,650.124,245.0948,650.515,245.4858C650.71,245.6808,650.966,245.7778,651.222,245.7778C651.478,245.7778,651.733,245.6808,651.929,245.4858L659.706,237.7078C659.798,237.6158,659.872,237.5048,659.923,237.3818"  Fill="Black" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                            </Grid>
+                            <TextBlock Grid.Row="1" Margin="0,-4,0,0" x:Name="TextLabel" Text="Redo" Foreground="White" FontSize="10" TextAlignment="Center" Width="Auto"  TextTrimming="WordEllipsis" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Fill">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathGray" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathWhite" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathBlack" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathGray" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathWhite" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathBlack" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PdfViewerBackBtnStyle" TargetType="Button">
+            <Setter Property="AutomationProperties.AutomationId" Value="BackButton"/>
+            <Setter Property="AutomationProperties.Name" Value="Back"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent" Height="60">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="8*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Name="backgroundGrid" Height="40" Width="40" Visibility="Visible" Grid.Row="0" Background="Transparent" >
+                                <Ellipse x:Name="OpenButtonRectangle" Fill="Transparent"/>
+                                <Grid x:Name="openPathWhite" Canvas.Left="293" Canvas.Top="150" Height="35" Width="35">
+                                    <Path Data="F1M506,239C506,251.703,495.703,262,483,262C470.297,262,460,251.703,460,239C460,226.297,470.297,216,483,216C495.703,216,506,226.297,506,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="White" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M496,239L472.414,239L478.485,232.929C478.876,232.538,478.876,231.905,478.485,231.515C478.095,231.124,477.462,231.124,477.071,231.515L469.294,239.292C469.201,239.384,469.128,239.495,469.077,239.618C468.976,239.862,468.976,240.138,469.077,240.382C469.128,240.505,469.201,240.616,469.294,240.708L477.071,248.485C477.267,248.681,477.522,248.778,477.778,248.778C478.034,248.778,478.29,248.681,478.485,248.485C478.876,248.095,478.876,247.462,478.485,247.071L472.414,241L496,241C496.553,241,497,240.553,497,240C497,239.447,496.553,239,496,239" Fill="White" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                                <Grid x:Name="openPathBlack" Canvas.Left="293" Canvas.Top="150" Height="35" Width="35" Opacity="0">
+                                    <Path Data="F1M506,239C506,251.703,495.703,262,483,262C470.297,262,460,251.703,460,239C460,226.297,470.297,216,483,216C495.703,216,506,226.297,506,239" StrokeStartLineCap="Flat" Stretch="Fill" StrokeEndLineCap="Flat" Stroke="Black" StrokeThickness="2" StrokeMiterLimit="10" StrokeLineJoin="Miter"/>
+                                    <Path Data="F1M496,239L472.414,239L478.485,232.929C478.876,232.538,478.876,231.905,478.485,231.515C478.095,231.124,477.462,231.124,477.071,231.515L469.294,239.292C469.201,239.384,469.128,239.495,469.077,239.618C468.976,239.862,468.976,240.138,469.077,240.382C469.128,240.505,469.201,240.616,469.294,240.708L477.071,248.485C477.267,248.681,477.522,248.778,477.778,248.778C478.034,248.778,478.29,248.681,478.485,248.485C478.876,248.095,478.876,247.462,478.485,247.071L472.414,241L496,241C496.553,241,497,240.553,497,240C497,239.447,496.553,239,496,239" Fill="Black" StrokeThickness="2" Stretch="Fill" Margin="9.232,10.973,9.233,10.973"/>
+                                </Grid>
+                            </Grid>
+                            <TextBlock Grid.Row="1" Margin="0,-4,0,0" x:Name="TextLabel" Text="Back" Foreground="White" FontSize="10" TextAlignment="Center" Width="Auto"  TextTrimming="WordEllipsis" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0.5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="OpenButtonRectangle" Storyboard.TargetProperty="Fill">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathWhite" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="0"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="openPathBlack" Storyboard.TargetProperty="Opacity">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="1"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <StackPanel HorizontalAlignment="Center" >
+        <muxc:NavigationView x:Name="nv" Canvas.ZIndex="2" SelectionChanged="nv_SelectionChanged" PaneDisplayMode="Top" Background="#323232" IsSettingsVisible="False" IsBackButtonVisible="Collapsed">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Content="File" x:Name="File"/>
+                <muxc:NavigationViewItem Content="Home" x:Name="Home"/>
+                <muxc:NavigationViewItem Content="Annotation" Visibility="Collapsed"/>
+                <muxc:NavigationViewItem Content="Ink" x:Name="Ink"/>
+                <muxc:NavigationViewItem Content="View" x:Name="View"/>
+            </muxc:NavigationView.MenuItems>
+            <muxc:NavigationView.PaneHeader>
+                <Grid HorizontalAlignment="Left">
+                    <Button Background="Transparent" Margin="20,0,0,0" Name="BackButton" Style="{StaticResource PdfViewerBackBtnStyle}">
+                    </Button>
+                </Grid>
+            </muxc:NavigationView.PaneHeader>
+            <muxc:NavigationView.PaneFooter>
+                <StackPanel Orientation="Horizontal">
+                    <Grid   HorizontalAlignment="Center">
+                        <Button Background="Transparent" Name="UndoButton" Style="{StaticResource PdfViewerUndoBtnStyle}" Command="{Binding ElementName=pdfViewer, Path=UndoCommand, Mode=TwoWay}">
+                        </Button>
+                    </Grid>
+                    <Grid Margin="2" HorizontalAlignment="Center">
+                        <Button Background="Transparent" Name="RedoButton" Style="{StaticResource PdfViewerRedoBtnStyle}" Command="{Binding ElementName=pdfViewer, Path=RedoCommand, Mode=TwoWay}" >
+                        </Button>
+                    </Grid>
+                    <SearchBox x:Name="SearchBox" 
+    FocusOnKeyboardInput="True"
+                               Width="300"
+                               Margin="4"
+                               QuerySubmitted="SearchBox_QuerySubmitted"
+    Height="30"/>
+                    <CommandBar OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" Background="Transparent">
+                        <AppBarButton  CornerRadius="5,0 ,10, 0" Click="PrevButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70E;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton  CornerRadius="5,0 ,10, 0" Click="NextButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70D;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar>
+                </StackPanel>
+            </muxc:NavigationView.PaneFooter>
+            <Grid>
+                <StackPanel Orientation="Horizontal" x:Name="InkBar" Background="Transparent">
+                    <CommandBar OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" Background="Transparent">
+                        <AppBarButton Label="Ink" Click="InkButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDC6;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton Label="Color">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE790;"/>
+                            </AppBarButton.Icon>
+                            <AppBarButton.Flyout>
+                                <Flyout>
+                                    <hsvColorPickers:ColorPicker x:Name="ColorPicker" Background="Transparent" ColorChanged="ColorPicker_ColorChangeCompleted" ColorChangeCompleted="ColorPicker_ColorChangeCompleted"/>
+                                </Flyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                    </CommandBar>
+                    <TextBlock Margin="5, 0, 3, 0" VerticalAlignment="Center" Text="Size:"/>
+                    <Slider x:Name="ThiccSlider" ValueChanged="ThiccSlider_ValueChanged" Margin="5" Width="200" Minimum="1" Maximum="50" Value="10"/>
+                    <TextBlock VerticalAlignment="Center" Text="Opacity:"/>
+                    <Slider x:Name="OpacitySlider" ValueChanged="OpacitySlider_ValueChanged" Margin="5" Width="100" Minimum="0" Maximum="1" Value="1" StepFrequency="0.05"/>
+                    <TextBlock VerticalAlignment="Center" Text="Mode:" Margin="4, 0,4, 0"/>
+                    <ToggleSwitch x:Name="InkNative" Toggled="InkNative_Toggled" OffContent="Low performance" OnContent="High performance" IsOn="True" />
+                </StackPanel>
+                <CommandBar OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" x:Name="FileBar" Visibility="Collapsed" Background="#323232">
+                <AppBarButton Label="Open PDF" Icon="OpenFile" Click="OpenButton_Click"></AppBarButton>
+                    <AppBarButton Label="Print" Icon="Print" Command="{Binding PrintCommand}"></AppBarButton>
+                </CommandBar>
+                <StackPanel Orientation="Horizontal" x:Name="HomeBar" Background="Transparent">
+                    <CommandBar OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" Background="Transparent">
+                        <AppBarButton Label="Previous" Command="{Binding ElementName=pdfViewer, Path=PreviousPageCommand}">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70E;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+ 
+                        <AppBarButton Label="Next" Command="{Binding ElementName=pdfViewer, Path=NextPageCommand}" >
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70D;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarSeparator/>
+                        <AppBarButton CornerRadius="5,0 ,10, 0" Label="First page" Command="{Binding ElementName=pdfViewer, Path=FirstPageCommand}">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74A;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton Label="Last page" Command="{Binding ElementName=pdfViewer, Path=LastPageCommand}">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74B;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarSeparator/>
+                    </CommandBar>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" x:Name="ViewBar" Visibility="Collapsed" Background="#323232">
+                    <CommandBar OverflowButtonVisibility="Collapsed" DefaultLabelPosition="Right" Background="Transparent">
+                        <AppBarButton Label="View" Click="ViewButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEA90;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton Label="Fit" Click="FitViewButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9A6;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton Label="One" Click="OneViewButton_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF56E;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarSeparator/>
+                        <AppBarButton Label="Zoom in" Icon="ZoomIn"  Command="{Binding ElementName=pdfViewer, Path=IncreaseZoomCommand}"></AppBarButton>
+                        <AppBarButton Label="Zoom out" Icon="ZoomOut" Command="{Binding ElementName=pdfViewer, Path=DecreaseZoomCommand}" ></AppBarButton>
+                    </CommandBar>
+                </StackPanel>
+            </Grid>
+        </muxc:NavigationView>
+
+        <Grid Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+
+            <Hub Header="Open a pdf">
+                <HubSection MinWidth="400" Header="Recents" Background="#242424">
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="The most recently opened files will be here" 
+                   Style="{ThemeResource BodyTextBlockStyle}"/>
+                            <Grid Grid.Row="4" VerticalAlignment="Stretch" >
+                                <Button x:Name="GlobalOpenButton"  Background="Transparent" Tag="Open" Style="{StaticResource PdfViewerGlobalOpenBtnStyle}"  Click="OpenButton_Click">
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                        </DataTemplate>
+                    </HubSection>
+
+                <HubSection x:Name="Tech" Header="Settings" IsHeaderInteractive="False"  
+        Background="#191919" MinWidth="250">
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="Setting" 
+                   Style="{ThemeResource BodyTextBlockStyle}"/>
+                            <Button x:Name="Button3" Margin="5"
+   CornerRadius="5" Padding="4,-3,4,-3" BorderThickness="1" FontWeight="Bold">
+                                <Button.Resources>
+                                    <ResourceDictionary>
+                                        <ResourceDictionary.ThemeDictionaries>
+                                            <ResourceDictionary x:Key="Default">
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBackground">
+                                                    <GradientStop Color="Aqua" Offset="0.0"/>
+                                                    <GradientStop Color="Blue" Offset="1.0"/>
+                                                </LinearGradientBrush>
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBorderBrush">
+                                                    <GradientStop Color="White" Offset="0.0"/>
+                                                    <GradientStop Color="Purple" Offset="1.0"/>
+                                                </LinearGradientBrush>
+
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBackgroundPointerOver">
+                                                    <GradientStop Color="#bfd5407a" Offset="0.0"/>
+                                                    <GradientStop Color="#bffa7765" Offset="1.0"/>
+                                                </LinearGradientBrush>
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBorderBrushPointerOver">
+                                                    <GradientStop Color="Purple" Offset="0.0"/>
+                                                    <GradientStop Color="White" Offset="1.0"/>
+                                                </LinearGradientBrush>
+
+                                                <SolidColorBrush x:Key="ButtonForeground" Color="White"/>
+                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#bfd5407a"/>
+                                            </ResourceDictionary>
+                                            <ResourceDictionary x:Key="Dark">
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBackground">
+                                                    <GradientStop Color="Aqua" Offset="0.0"/>
+                                                    <GradientStop Color="Blue" Offset="1.0"/>
+                                                </LinearGradientBrush>
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBorderBrush">
+                                                    <GradientStop Color="White" Offset="0.0"/>
+                                                    <GradientStop Color="#bfdd378c" Offset="1.0"/>
+                                                </LinearGradientBrush>
+
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBackgroundPointerOver">
+                                                    <GradientStop Color="#bf8737dd" Offset="0.0"/>
+                                                    <GradientStop Color="#bf425ff4" Offset="1.0"/>
+                                                </LinearGradientBrush>
+                                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" x:Key="ButtonBorderBrushPointerOver">
+                                                    <GradientStop Color="#bfdd378c" Offset="0.0"/>
+                                                    <GradientStop Color="White" Offset="1.0"/>
+                                                </LinearGradientBrush>
+
+                                                <SolidColorBrush x:Key="ButtonForeground" Color="White"/>
+                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#bf8737dd"/>
+                                            </ResourceDictionary>
+                                        </ResourceDictionary.ThemeDictionaries>
+                                    </ResourceDictionary>
+                                </Button.Resources>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Glyph="&#xE946;" Margin="0,10,0,10" FontSize="15" FontWeight="Bold"/>
+                                    <TextBlock Text="About" Margin="10, 7, 0, 0"/>
+                                </StackPanel>
+                            </Button>
+                            <notification:SfHubTile x:Name="hubTile" Foreground="White" 
+
+RotationDepth="40" Width="150" Height="150"
+
+Content="RATE IT ON STORE"
+
+Header="RATE OUR APP" />
+
+                        </StackPanel>
+                    </DataTemplate>
+                </HubSection>
+            </Hub>
+                <syncfusion:SfPdfViewerControl x:Name="pdfViewer" Canvas.ZIndex="1" Height="1000" HorizontalAlignment="Right" ShowPageNumber="False"></syncfusion:SfPdfViewerControl>
+        </Grid>
+    </StackPanel>
+</Page>
