@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,40 +26,43 @@ namespace Fluetro.Views
     /// </summary>
     public sealed partial class OOBEPage : Page
     {
+        
         public OOBEPage()
         {
             this.InitializeComponent();
-        }
-        private void NextBtn_Click(object sender, RoutedEventArgs e)
-        {
-            FlipViewControl.SelectedIndex = FlipViewControl.SelectedIndex + 1;
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar; titleBar.ButtonBackgroundColor = Colors.Transparent;
         }
 
-        private void PreviousBtn_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            FlipViewControl.SelectedIndex = FlipViewControl.SelectedIndex - 1;
+            Frame rootFrame = new Frame();
+            // Place the frame in the current Window
+            Window.Current.Content = rootFrame;
+            rootFrame.Navigate(typeof(HomePage));
         }
 
-        private void FlipViewControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Light_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                NextBtn.IsEnabled = true;
-                PreviousBtn.IsEnabled = true;
-                if (FlipViewControl.SelectedIndex == 0)
-                {
-                    PreviousBtn.IsEnabled = false;
-                }
 
-                if (FlipViewControl.SelectedIndex == 3)
-                {
-                    NextBtn.IsEnabled = false;
-                }
-            }
-            catch
-            {
+        }
 
-            }
+        private void Light_Checked(object sender, RoutedEventArgs e)
+        {
+            this.RequestedTheme = ElementTheme.Light;
+        }
+
+        private void Dark_Checked(object sender, RoutedEventArgs e)
+        {
+            this.RequestedTheme = ElementTheme.Dark;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Frame rootFrame = new Frame();
+            // Place the frame in the current Window
+            Window.Current.Content = rootFrame;
+            rootFrame.Navigate(typeof(HomePage));
         }
     }
 }
